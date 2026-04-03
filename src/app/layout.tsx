@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,6 +29,20 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <nav className="flex justify-center gap-4 py-4 bg-white border-b border-gray-100">
+          <Link
+            href="/typh/typh_introduce"
+            className="flex h-10 items-center justify-center rounded-full bg-blue-600 px-5 text-sm text-white font-medium hover:bg-blue-700 transition-colors"
+          >
+            Typh 介绍
+          </Link>
+          <Link
+            href="/typh/typh_role"
+            className="flex h-10 items-center justify-center rounded-full bg-purple-600 px-5 text-sm text-white font-medium hover:bg-purple-700 transition-colors"
+          >
+            Typh 角色
+          </Link>
+        </nav>
         {children}
       </body>
     </html>
