@@ -1,54 +1,137 @@
-import Image from "next/image";
+'use client'
+
+import { useRouter } from 'next/navigation'
+import { useState, useEffect, useRef } from 'react'
 
 export default function Home() {
+  const router = useRouter()
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [bigPetals, setBigPetals] = useState<Array<{ left: string; delay: string; duration: string }>>([])
+  const [smallPetals, setSmallPetals] = useState<Array<{ left: string; delay: string; duration: string }>>([])
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  // 只在客户端生成随机值
+  useEffect(() => {
+    // 生成大花瓣
+    const big = Array.from({ length: 6 }).map(() => ({
+      left: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 8}s`,
+      duration: `${8 + Math.random() * 5}s`,
+    }))
+    
+    // 生成小花瓣
+    const small = Array.from({ length: 20 }).map(() => ({
+      left: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 8}s`,
+      duration: `${6 + Math.random() * 6}s`,
+    }))
+    
+    setBigPetals(big)
+    setSmallPetals(small)
+  }, [])
+
+  // 预加载视频
+  useEffect(() => {
+    const video = document.createElement('video')
+    video.src = 'typhtv.mp4'
+    video.preload = 'auto'
+    video.muted = true
+    video.loop = true
+
+    const handleLoad = () => {
+      setIsLoading(false)
+    }
+
+    const handleError = () => {
+      console.error('视频加载失败')
+      setIsLoading(false)
+    }
+
+    video.addEventListener('loadeddata', handleLoad)
+    video.addEventListener('error', handleError)
+
+    return () => {
+      video.removeEventListener('loadeddata', handleLoad)
+      video.removeEventListener('error', handleError)
+    }
+  }, [])
+
+  const handleClick = () => {
+    if (isAnimating || isLoading) return
+    
+    setIsAnimating(true)
+    
+    // 确保视频在动画开始前已经准备好
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0
+      videoRef.current.play().catch(err => console.error('视频播放失败:', err))
+    }
+    
+    const animationDuration = 6000
+    
+    setTimeout(() => {
+      router.push('/next-page')
+    }, animationDuration)
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-           TYPH YYDS!!!
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-         
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div
+      className="home-container"
+      onClick={handleClick}
+      style={{ 
+        cursor: isLoading ? 'default' : 'pointer'
+      }}
+    >
+      <img
+        src="/bg/typh-bg.jpg"
+        alt="background"
+        className="bg-image"
+      />
+      <div className="blur-right" />
+      <div className="petals">
+        {bigPetals.map((petal, i) => (
+          <div key={`big-${i}`} className="petal petal-big" style={{
+            left: petal.left,
+            animationDelay: petal.delay,
+            animationDuration: petal.duration,
+          }} />
+        ))}
+        {smallPetals.map((petal, i) => (
+          <div key={i} className={`petal petal-${i % 5}`} style={{
+            left: petal.left,
+            animationDelay: petal.delay,
+            animationDuration: petal.duration,
+          }} />
+        ))}
+      </div>
+      <div className="hint-text">Click anywhere to enter the next step</div>
       
+      {/* 加载指示器 */}
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner" />
+        </div>
+      )}
+      
+      {/* 视频切换动画 */}
+      {isAnimating && (
+        <div className="video-transition">
+          <video
+            ref={videoRef}
+            src="typhtv.mp4"
+            autoPlay
+            muted
+            loop
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              backgroundColor: '#ffffff'
+            }}
+          />
+        </div>
+      )}
     </div>
-
-  );
+  )
 }
-
