@@ -1,0 +1,403 @@
+.satellite {
+  position: absolute;
+  width:60px;
+  height: 75px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(100,180,255,0.4), rgba(60,140,220,0.3));
+  border: 2px solid rgba(120,190,255,0.3);
+  box-shadow: 0 0 18px rgba(80,160,240,0.3), 0 0 32px rgba(60,130,200,0.15);
+  transform: translate(-50%, -50%) scale(0);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.satellite.sub-satellite {
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(255,215,100,0.5), rgba(255,200,80,0.4));
+  border: 2px solid rgba(255,215,100,0.4);
+  box-shadow: 0 0 20px rgba(255,215,100,0.4), 0 0 40px rgba(255,200,80,0.2);
+}
+
+.satellite.sub-satellite .satellite-wave {
+  border-color: rgba(255,215,100,0.15);
+  background: linear-gradient(135deg, rgba(255,220,120,0.2) 0%, rgba(255,200,80,0.08) 50%, rgba(255,180,60,0.12) 100%);
+  box-shadow: 
+    inset -5px -5px 15px rgba(255,230,150,0.2), 
+    inset 5px 5px 15px rgba(255,180,60,0.1),
+    0 5px 15px rgba(255,200,80,0.2),
+    0 10px 30px rgba(255,180,60,0.15);
+}
+
+.satellite.sub-satellite .center-particle {
+  background: radial-gradient(circle, rgba(255,220,120,1), rgba(255,200,80,0.9));
+  box-shadow: 0 0 8px rgba(255,220,120,1), 0 0 16px rgba(255,200,80,0.7);
+}
+
+.satellite.sub-satellite .satellite-particle {
+  background: radial-gradient(circle, rgba(255,220,120,1), rgba(255,200,80,0.9));
+  box-shadow: 0 0 6px rgba(255,220,120,1), 0 0 12px rgba(255,200,80,0.7);
+}
+
+.satellite:hover {
+  background: radial-gradient(circle, rgba(120,200,255,0.6), rgba(80,160,240,0.4));
+  border-color: rgba(140,210,255,0.5);
+  box-shadow: 0 0 25px rgba(100,180,255,0.5), 0 0 45px rgba(80,160,240,0.3);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.satellite.hovered {
+  background: radial-gradient(circle, rgba(120,200,255,0.6), rgba(80,160,240,0.4));
+  border-color: rgba(140,210,255,0.5);
+  box-shadow: 0 0 25px rgba(100,180,255,0.5), 0 0 45px rgba(80,160,240,0.3);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.satellite.active {
+  background: radial-gradient(circle, rgba(140,220,255,0.7), rgba(100,180,240,0.5));
+  border-color: rgba(160,220,255,0.6);
+  box-shadow: 0 0 30px rgba(120,200,255,0.6), 0 0 55px rgba(100,180,240,0.4);
+}
+
+.satellite.tracking {
+  animation: tracking-focus 1s ease-out infinite;
+}
+
+@keyframes tracking-focus {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 40px rgba(140,220,255,0.8), 0 0 70px rgba(120,200,255,0.6), 0 0 100px rgba(100,180,240,0.4);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 0 60px rgba(160,230,255,1), 0 0 100px rgba(140,210,255,0.8), 0 0 140px rgba(120,200,240,0.6);
+  }
+}
+
+.satellite-connection {
+  position: absolute;
+  height: 1px;
+  opacity:0;
+  pointer-events: none;
+  z-index: 0;
+  transition: all 0.3s ease;
+}
+
+.satellite-connection::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    rgba(100, 180, 255, 0.8) 0%,
+    rgba(80, 160, 240, 0.4) 20%,
+    rgba(60, 140, 220, 0.2) 50%,
+    rgba(40, 120, 200, 0.05) 80%,
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 4px rgba(100, 180, 255, 0.6),
+    0 0 8px rgba(80, 160, 240, 0.4),
+    0 0 12px rgba(60, 140, 220, 0.2);
+}
+
+.satellite-connection.active::before {
+  background: linear-gradient(
+    to right,
+    rgba(140, 200, 255, 1) 0%,
+    rgba(100, 180, 240, 0.6) 20%,
+    rgba(80, 160, 220, 0.3) 50%,
+    rgba(60, 140, 200, 0.1) 80%,
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 6px rgba(140, 200, 255, 0.8),
+    0 0 12px rgba(100, 180, 240, 0.6),
+    0 0 18px rgba(80, 160, 220, 0.4);
+}
+
+.satellite-connection.sub-satellite::before {
+  background: linear-gradient(
+    to right,
+    rgba(255, 215, 100, 0.9) 0%,
+    rgba(255, 200, 80, 0.5) 20%,
+    rgba(255, 180, 60, 0.25) 50%,
+    rgba(255, 160, 40, 0.08) 80%,
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 5px rgba(255, 215, 100, 0.7),
+    0 0 10px rgba(255, 200, 80, 0.5),
+    0 0 15px rgba(255, 180, 60, 0.3);
+}
+
+.satellite-connection.sub-satellite.active::before {
+  background: linear-gradient(
+    to right,
+    rgba(255, 220, 120, 1) 0%,
+    rgba(255, 200, 80, 0.7) 20%,
+    rgba(255, 180, 60, 0.4) 50%,
+    rgba(255, 160, 40, 0.15) 80%,
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 8px rgba(255, 220, 120, 0.9),
+    0 0 16px rgba(255, 200, 80, 0.7),
+    0 0 24px rgba(255, 180, 60, 0.5);
+}
+
+.satellite-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px rgba(100, 180, 255, 0.8), 0 0 16px rgba(80, 160, 240, 0.6);
+  pointer-events: none;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.satellite-wave {
+  position: absolute;
+  inset: -4px;
+  border-radius: 48% 52% 45% 55% / 55% 45% 52% 48%;
+  border: 1px solid rgba(100,170,255,0.08);
+  background: linear-gradient(135deg, rgba(150,210,255,0.12) 0%, rgba(80,160,240,0.04) 50%, rgba(40,120,200,0.08) 100%);
+  box-shadow: 
+    inset -5px -5px 15px rgba(180,220,255,0.1), 
+    inset 5px 5px 15px rgba(40,100,180,0.08),
+    0 5px 15px rgba(60,120,200,0.15),
+    0 10px 30px rgba(40,100,180,0.1);
+  animation: satellite-wave 2.8s ease-out infinite;
+  pointer-events: none;
+}
+
+.sw1 {
+  animation-delay: 0s;
+}
+
+.sw2 {
+  border-radius: 55% 45% 58% 42% / 42% 58% 45% 55%;
+  animation-delay: 0.5s;
+}
+
+.sw3 {
+  border-radius: 43% 57% 47% 53% / 54% 46% 56% 44%;
+  animation-delay: 1s;
+}
+
+.center-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(150,210,255,1), rgba(100,180,240,0.8));
+  box-shadow: 0 0 8px rgba(100,180,255,1), 0 0 16px rgba(80,160,240,0.6);
+  animation: center-particle-spread 1.5s ease-out infinite;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.cp1 { --tx: 0px; --ty: -40px; animation-delay: 0s; }
+.cp2 { --tx: 35px; --ty: -35px; animation-delay: 0.15s; }
+.cp3 { --tx: 40px; --ty: 0px; animation-delay: 0.3s; }
+.cp4 { --tx: 35px; --ty: 35px; animation-delay: 0.45s; }
+.cp5 { --tx: 0px; --ty: 40px; animation-delay: 0.6s; }
+.cp6 { --tx: -35px; --ty: 35px; animation-delay: 0.75s; }
+.cp7 { --tx: -40px; --ty: 0px; animation-delay: 0.9s; }
+.cp8 { --tx: -35px; --ty: -35px; animation-delay: 1.05s; }
+
+.satellite-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(150,210,255,1), rgba(100,180,240,0.8));
+  box-shadow: 0 0 6px rgba(100,180,255,1), 0 0 12px rgba(80,160,240,0.6);
+  animation: particle-float 4s ease-in-out infinite;
+  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  z-index: 15;
+}
+
+.p1 { --px: -100px; --py: -80px; animation-delay: 0s; }
+.p2 { --px: 90px; --py: -70px; animation-delay: 0.4s; }
+.p3 { --px: -95px; --py: 30px; animation-delay: 0.8s; }
+.p4 { --px: 75px; --py: 85px; animation-delay: 1.2s; }
+.p5 { --px: 105px; --py: -20px; animation-delay: 1.6s; }
+.p6 { --px: -60px; --py: 95px; animation-delay: 2s; }
+.p7 { --px: 50px; --py: -95px; animation-delay: 2.4s; }
+.p8 { --px: -105px; --py: 15px; animation-delay: 2.8s; }
+.p9 { --px: 85px; --py: 60px; animation-delay: 3.2s; }
+.p10 { --px: -30px; --py: 100px; animation-delay: 3.6s; }
+
+@keyframes satellite-appear {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes satellite-disappear {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes satellite-wave {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.875);
+    opacity: 0;
+  }
+}
+
+@keyframes center-particle-spread {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translateX(var(--tx)) translateY(var(--ty)) scale(0.3);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-float {
+  0%, 100% {
+    transform: translate(-50%, -50%) translate(calc(var(--px) * 0.8), calc(var(--py) * 0.8)) scale(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translate(-50%, -50%) translate(calc(var(--px) * 0.9), calc(var(--py) * 0.9)) scale(1.2);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) translate(calc(var(--px) * 1), calc(var(--py) * 1)) scale(0.9);
+    opacity: 0.6;
+  }
+  75% {
+    transform: translate(-50%, -50%) translate(calc(var(--px) * 0.85), calc(var(--py) * 0.85)) scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+@keyframes wave-pulse {
+  0%, 100% {
+    box-shadow: 0 0 18px rgba(80,160,240,0.3), 0 0 32px rgba(60,130,200,0.15);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(80,160,240,0.5), 0 0 45px rgba(60,130,200,0.25);
+  }
+}
+
+@keyframes connection-appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes connection-disappear {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes satellite-click-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 30px rgba(120,200,255,0.6), 0 0 55px rgba(100,180,240,0.4);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    box-shadow: 0 0 50px rgba(140,220,255,0.9), 0 0 80px rgba(120,200,240,0.6);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 30px rgba(120,200,255,0.6), 0 0 55px rgba(100,180,240,0.4);
+  }
+}
+
+@keyframes tracker-orbit {
+  0% {
+    transform: rotate(0deg) translateX(120px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) translateX(120px) rotate(-360deg);
+    opacity: 0;
+  }
+}
+
+.tracker-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,1), rgba(100,180,255,0.8));
+  box-shadow: 0 0 10px rgba(100,180,255,1), 0 0 20px rgba(80,160,240,0.6);
+  pointer-events: none;
+  z-index: 15;
+}
+
+.satellite.sub-satellite .tracker-particle {
+  background: radial-gradient(circle, rgba(255,255,255,1), rgba(255,220,120,0.9));
+  box-shadow: 0 0 10px rgba(255,220,120,1), 0 0 20px rgba(255,200,80,0.6);
+}
+
+.satellite-image {
+  animation: satellite-image-float 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
+}
+
+.satellite.sub-satellite .satellite-image {
+  filter: drop-shadow(0 0 10px rgba(255,220,120,0.8));
+}
+
+@keyframes satellite-image-float {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
